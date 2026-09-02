@@ -4,7 +4,7 @@ namespace MicroserviceProject.Catalog.Api.Repositories;
 
 public class BaseEntity
 {
-    [BsonElement("_id")] public Guid Id { get; set; }
+	[BsonElement("_id")] public Guid Id { get; set; }
 }
 
 //NOTE: snow flake - guid nedir?
