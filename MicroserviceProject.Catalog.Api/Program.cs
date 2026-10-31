@@ -1,10 +1,12 @@
-using MicroserviceProject.Catalog.Api.Extensions;
+using MicroserviceProject.Catalog.Api.Options;
+using MicroserviceProject.Catalog.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsExt();
+builder.Services.AddDatabaseServiceExt();
 
 var app = builder.Build();
 

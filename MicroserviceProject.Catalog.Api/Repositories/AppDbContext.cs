@@ -2,18 +2,27 @@
 using MicroserviceProject.Catalog.Api.Features.Courses;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using MongoDB.Driver;
 
 namespace MicroserviceProject.Catalog.Api.Repositories
 {
-	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
-	{
-		public DbSet<Course> Courses { get; set; }
-		public DbSet<Category> Categories { get; set; }
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    {
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-			base.OnModelCreating(modelBuilder);
-		}
-	}
+        public static AppDbContext Create(IMongoDatabase database)
+        {
+            var optionsBuilder =
+                new DbContextOptionsBuilder<AppDbContext>().UseMongoDB(database.Client,
+                    database.DatabaseNamespace.DatabaseName);
+            return new AppDbContext(optionsBuilder.Options);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
+    }
 }
